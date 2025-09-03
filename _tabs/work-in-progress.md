@@ -11,5 +11,3 @@ I'm currently learning:
 
 - **Bash scripting**
 - **Kubernetes (k8s)**
-- **just for test**
-- **another test to check auto deployment**
