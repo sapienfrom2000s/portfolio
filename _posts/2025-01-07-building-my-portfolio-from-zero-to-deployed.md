@@ -91,13 +91,6 @@ Typed the domain into my browser. It worked.
 
 That feeling when you see your own site, running on your own infrastructure, accessible from anywhere in the world? Pure magic.
 
-## What I Learned
-
-1. **Infrastructure as Code is liberating** - No clicking through cloud consoles
-2. **nginx is bulletproof** - Set it and forget it
-3. **DNS propagation is still mysterious** - Sometimes 5 minutes, sometimes 2 hours
-4. **Free tiers are amazing** - This whole setup costs almost nothing
-
 ## SSL Certificate
 
 With certbot installed, getting an SSL certificate was straightforward:
