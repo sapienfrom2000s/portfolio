@@ -7,7 +7,6 @@ order: 3
 
 📅 *Last updated: September 3, 2025*
 
-I'm currently learning:
+I'm currently trying out:
 
-- **Bash scripting**
-- **Kubernetes (k8s)**
+- **K8s the hard way**
