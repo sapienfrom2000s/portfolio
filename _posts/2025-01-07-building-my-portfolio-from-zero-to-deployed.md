@@ -1,6 +1,6 @@
 ---
 title: "Building My Portfolio: From Zero to Deployed"
-date: 2025-09-07 12:00:00 +0000
+date: 2025-09-06 12:00:00 +0000
 categories: [DevOps, Web Development]
 tags: [terraform, gcp, jekyll, nginx, infrastructure, portfolio]
 ---
