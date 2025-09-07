@@ -10,3 +10,8 @@ order: 3
 I'm currently trying out:
 
 - **K8s the hard way**
+
+I want to build:
+
+- **Delayed Jobs Alternative**
+- **Debian/Lubuntu with dwm - ISO**
