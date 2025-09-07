@@ -15,3 +15,4 @@ I want to build:
 
 - **Delayed Jobs Alternative**
 - **Debian/Lubuntu with dwm - ISO**
+- **Mood Tracker**
