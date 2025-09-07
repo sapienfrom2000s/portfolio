@@ -5,13 +5,13 @@ categories: [DevOps, Web Development]
 tags: [terraform, gcp, jekyll, nginx, infrastructure, portfolio]
 ---
 
-I finally did it. After years of saying "I should build a proper portfolio site," I actually built one. The trigger? Reading [Logan Marchione's excellent post](https://loganmarchione.com/2022/10/the-best-devops-project-for-a-beginner/) about the best DevOps project for beginners.
+I built and deployed my portfolio site after reading [Logan Marchione's post](https://loganmarchione.com/2022/10/the-best-devops-project-for-a-beginner/) about DevOps projects for beginners.
 
-He was right. Building and deploying your own site teaches you everything: infrastructure, networking, web servers, DNS, and deployment. Plus, you get something useful at the end.
+The project covers infrastructure provisioning, server configuration, web server setup, DNS management, and deployment.
 
 ## The Starting Point
 
-I already had a [Jekyll app](https://github.com/sapienfrom2000s/portfolio) sitting in a repo, gathering digital dust. Classic developer move - build the thing, never deploy it. Time to fix that.
+I had a [Jekyll app](https://github.com/sapienfrom2000s/portfolio) in a repository that needed to be deployed.
 
 ## Infrastructure as Code
 
@@ -28,14 +28,14 @@ resource "google_compute_instance" "portfolio_vm" {
 }
 ```
 
-Key decisions:
+Configuration:
 - **Ingress and Egress rules**: Opened HTTP (80) and HTTPS (443) ports
 - **SSH access**: Port 22 for remote management
-- **Minimal specs**: e2-micro instance because this isn't Netflix
+- **Instance type**: e2-micro (free tier)
 
 ## Server Setup
 
-Once the VM was running, the usual server prep:
+Server setup steps:
 
 ```bash
 # Always start here
@@ -61,7 +61,7 @@ bundle install
 jekyll build
 ```
 
-Then pointed nginx at the `_site` directory. Simple nginx config:
+Configured nginx to serve the `_site` directory:
 
 ```nginx
 server {
@@ -72,11 +72,9 @@ server {
 }
 ```
 
-## Making It Real
+## Domain Setup
 
-The final piece: making it accessible to the world.
-
-Bought a domain at Namecheap for around ₹300, then added an A record pointing to my GCP VM's external IP.
+Purchased a domain at Namecheap for ₹300 and configured DNS with an A record pointing to the GCP VM's external IP.
 
 ```
 Type: A
@@ -87,9 +85,7 @@ TTL: Automatic
 
 ## The Moment of Truth
 
-Typed the domain into my browser. It worked.
-
-That feeling when you see your own site, running on your own infrastructure, accessible from anywhere in the world? Pure magic.
+Typed the domain into my browser. It worked. Yayy!
 
 ## SSL Certificate
 
@@ -109,13 +105,12 @@ Now I have a foundation to build on:
 - Monitoring and logging
 - Maybe a CDN if I'm feeling fancy
 
-## Why You Should Do This Too
+## Summary
 
-Logan was right - this is the perfect beginner DevOps project. You touch every part of the stack:
-- Infrastructure provisioning
-- Server administration  
-- Web server configuration
-- DNS management
+This project covers the full deployment stack:
+- Infrastructure provisioning with Terraform
+- Server administration and configuration
+- Web server setup with nginx
+- SSL certificate management
+- DNS configuration
 - Application deployment
-
-And at the end, you have something real. Something that's yours.
