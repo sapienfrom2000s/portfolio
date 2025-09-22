@@ -5,7 +5,7 @@ categories: [DevOps, Web Development]
 tags: [prometheus, grafana, devops, monitoring]
 ---
 
-![Prometheus Infra](/assets/lib/prometheus_infra.png)
+<img src="{{site.baseurl}}/assets/img/prometheus-infra.png">
 
 Kubernetes has become the de facto platform for running containerized applications, but managing and monitoring clusters at scale requires robust tools. Prometheus and Grafana together provide a powerful, flexible monitoring stack that is widely adopted in the Kubernetes ecosystem.
 
