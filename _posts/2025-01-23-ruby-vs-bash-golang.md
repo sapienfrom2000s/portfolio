@@ -1,6 +1,6 @@
 ---
 title: "sh vs Golang vs Ruby"
-date: 2025-09-03 12:00:00 +0000
+date: 2025-09-22 12:00:00 +0000
 categories: [programming, ruby, sh, golang]
 tags: [ruby, sh, golang]
 ---
