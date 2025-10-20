@@ -1,5 +1,5 @@
 ---
-title: "Building Table: Day 1 - Project Setup"
+title: "Learning Go: Day 1 - Table Generator"
 date: 2025-10-20 12:00:00 +0000
 categories: [Go, Learning]
 tags: [golang, project, learning-journey, table-generator]
@@ -68,4 +68,4 @@ func main() {
 }
 ```
 
-Tomorrow I'll try to create an uptime tracker of websites.
+Tomorrow I'll try to create an uptime tracker for websites.
