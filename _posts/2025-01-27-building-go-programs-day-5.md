@@ -1,5 +1,5 @@
 ---
-title: "Learning Go: Day 1 - A Simple Go Quiz Game"
+title: "Learning Go: Day 5 - A Simple Go Quiz Game"
 date: 2025-10-27 12:00:00 +0000
 categories: [Go, Projects]
 tags: [golang, project, game, quiz]
