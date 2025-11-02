@@ -30,6 +30,8 @@ USER app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
+Docker also solves the problem of 'it works on my machine'. It's super easy to replicate the environment across different machines.
+
 When `docker run -itd ...` is executed, the following things happen behind the scenes:
 1. Send http request to docker daemon to run an instance of image.
 2. dockerd makes grpc call to containerd.
