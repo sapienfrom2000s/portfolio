@@ -1,7 +1,7 @@
 ---
 title: "Learning Go: Days 2-4 - Uptime Tracker"
 date: 2025-10-23 12:00:00 +0000
-categories: [Go, Learning]
+categories: [AI Generated Article, Go, Learning]
 tags: [golang, project, learning-journey, uptime-tracker, sqlite, cron]
 ---
 
