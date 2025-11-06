@@ -9,4 +9,22 @@ Docker was released in 2013. It became a hit instantly as it made the applicatio
 
 K8s is a **container orchestration** tool that allows to manage cluster of nodes at the same time. It allows users to host their application across multiple nodes. Configuration can be written in yaml files and can be applied by a single command. Need to increase servers, just increase the replica count and apply the configuration. Need microservices to talk to each other, use svc. Don't know how many replicas is needed, use autoscaler groups. It also provides bunch of release strategies which can be chosen as per user needs to make sure that the deployment happens without any downtime.
 
+### Components of K8s
+
+<img src="{{site.baseurl}}/assets/img/k8s-components.png">
+
+In k8s, there are two types of nodes:
+1. Master Node/Control Plane
+
+- API Server - receives requests from clients and distributes them to other components.
+- Scheduler - decides where to place the new pods.
+- Controller Manager - manages the lifecycle of the pods(maybe if it went down, it will ask scheduler to schedule it)
+- etcd - key value store. Stores the cluster state.
+
+2. Worker Node
+
+- Kubelet - talks to API server and manages the pods on the node.
+- Kube-proxy - manages the network traffic. Sort of acts like a load balancer for the node.
+- Container Runtime - Runs the containers on the node.
+
 Alternatives: Docker Swarm, Nomad
