@@ -18,7 +18,7 @@ In k8s, there are two types of nodes:
 
 - API Server - receives requests from clients and distributes them to other components.
 - Scheduler - decides where to place the new pods.
-- Controller Manager - manages the lifecycle of the pods(maybe if it went down, it will ask scheduler to schedule it)
+- Controller Manager - manages the lifecycle of the pods(eg. if it went down, it will ask scheduler to schedule it)
 - etcd - key value store. Stores the cluster state.
 
 2. Worker Node
