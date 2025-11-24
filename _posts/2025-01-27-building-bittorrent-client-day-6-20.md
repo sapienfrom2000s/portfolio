@@ -1,5 +1,5 @@
 ---
-title: "Learning Go: Days 6-20 - Bittorrent Client"
+title: "Learning Go: Day 6-20 - Bittorrent Client"
 date: 2025-11-20 12:00:00 +0000
 categories: [Go, Bittorrent]
 tags: [Go, Bittorrent]
