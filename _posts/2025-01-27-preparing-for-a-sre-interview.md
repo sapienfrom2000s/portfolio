@@ -1,6 +1,6 @@
 ---
 title: "Preparing for a SRE Interview"
-date: 2025-12-19 12:00:00 +0000
+date: 2025-12-19 11:00:00 +0530
 categories: [sre, interview-prep]
 tags: [sre, kubernetes, k8s-handbook]
 ---
