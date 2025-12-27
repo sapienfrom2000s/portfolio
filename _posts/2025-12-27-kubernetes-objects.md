@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes - Objects"
-date: 2025-12-29 22:00:00 +0530
+date: 2025-12-27 22:00:00 +0530
 categories: [K8s, Objects]
 tags: [kubernetes]
 ---
