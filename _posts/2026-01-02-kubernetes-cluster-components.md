@@ -15,13 +15,13 @@ The control plane is the heart of the Kubernetes cluster. It is responsible for 
 and ensuring that the desired state of the cluster is achieved. The control plane consists of several
 components:
 
-1. Kubernetes API Server
+**Kubernetes API Server**
 
 This component acts as a frontend for kubernetes. It receives and validates requests from all cluster
 components and users and processes them. Eg.- Desired number of pods is 3 but there are only 2 running. 
 Controller requests API server to create a new pod object.
 
-2. Controller Manager
+**Controller Manager**
 
 This is a control loop that watches the shared state(etcd) of the cluster via the API server. It's main job is to compare
 actual and desired state of the cluster. If there is a difference, it takes corrective action to bring
@@ -30,13 +30,13 @@ object/state and take actions based on it. For e.g.-
 Node Controller - Responsible for tracking nodes. It takes action when a node becomes unhealthy.
 Job Controller - Watches job objects and watches it for completion.
 
-3. Scheduler
+**Scheduler**
 
 It watches for newly created pod objects and then assigns it a node where the containers of pod run.
 Which node gets selected for pod placement depends on factors like resource availability and custom
 user rules(e.g.- node affinity, taints/tolerations, requested resources).
 
-4. Etcd
+**Etcd**
 
 Key-Value store which stores the state of the cluster. It's recommended to make it highly available
 and fault tolerant by replicating it across multiple nodes. Also, user should always consistently
@@ -45,7 +45,7 @@ perform backups in case something goes wrong.
 
 ## Worker Nodes
 
-1. Kubelet
+**Kubelet**
 
 The agent that runs on each worker node. It is responsible for maintaining the containers of a pod.
 Kubelet is a node-level agent that manages pods and their containers by interacting with the container runtime. It also constantly reports the status of the node
@@ -61,11 +61,11 @@ Flow for creation of a new pod:
 6. Kubelet on the assigned node notices the new pod object.
 7. Kubelet creates the containers of the pod.
 
-2. Kube-proxy
+**Kube-proxy**
 
 It is responsible for routing traffic in the node.
 
-3. Container Runtime
+**Container Runtime**
 
 The software responsible for managing the container lifecycle. Any container runtime that adheres to
 the Kubernetes Container Runtime Interface (CRI) can be used. E.g.- containerd, CRI-O etc.
@@ -86,7 +86,8 @@ Tracking health of Worker Nodes with heartbeats:
 
 Kubelet constantly sends heartbeats to the API server to report the status of the node and it's
 availability. There are two types of heartbeats:
-1. Availability
+
+**Availability**
 
 Node is available and healthy. It updates the lightweight lease object. The default time is 10s. The
 object looks like the following:
@@ -107,7 +108,7 @@ object looks like the following:
 }
 ```
 
-2. Status - Status of Node
+**Status - Status of Node**
 
 The sends the status of the node such as CPU, memory, and disk usage. Since this object is a bit heavy,
 it gets updated every 40s.
