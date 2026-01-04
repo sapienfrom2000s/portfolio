@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes - Workload Management"
-date: 2026-01-01 12:45:00 +0530
+date: 2026-01-09 12:45:00 +0530
 categories: [K8s]
 tags: [kubernetes, deployments, replicasets, statefulsets, daemonsets, jobs, cronjobs]
 ---
