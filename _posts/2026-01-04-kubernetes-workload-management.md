@@ -29,28 +29,6 @@ The Deployment controller is responsible for:
 - Rolling updates and rollbacks
 - Scaling replicas
 
-A simple Deployment looks like this:
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-deployment
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: my-app
-  template:
-    metadata:
-      labels:
-        app: my-app
-    spec:
-      containers:
-      - name: my-container
-        image: my-image:latest
-```
-
 ### Important behavior
 
 - Any change inside `.spec.template` (image, env vars, labels, etc.) creates a **new ReplicaSet**.
@@ -129,29 +107,6 @@ These fields control how Pods are replaced during a rolling update.
 A **ReplicaSet** ensures that a specified number of identical Pods are running at any time.
 
 > In practice, users rarely create ReplicaSets directly. Deployments manage them automatically.
-
-```yaml
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: frontend
-  labels:
-    app: guestbook
-    tier: frontend
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      tier: frontend
-  template:
-    metadata:
-      labels:
-        tier: frontend
-    spec:
-      containers:
-      - name: php-redis
-        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
-```
 
 ---
 
