@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes - Services and Networking"
-date: 2026-01-04 12:45:00 +0530
+date: 2026-01-11 04:00:00 +0530
 categories: [K8s]
-tags: [kubernetes, deployments, replicasets, statefulsets, daemonsets, jobs, cronjobs]
+tags: [kubernetes, services, networking]
 ---
 
 ## Premise & Overview
