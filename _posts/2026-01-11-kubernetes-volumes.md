@@ -69,7 +69,7 @@ A **PersistentVolume (PV)** is a **cluster-level storage resource**.
 - Independent of Pods
 - Represents real storage
 - Created manually or dynamically
-- Has capacity, access modes(R, RW), reclaim policy
+- Has capacity, access modes(ReadWriteOnce, ReadOnlyMany, ReadWriteMany), reclaim policy
 
 **PV is infrastructure-oriented** ie- it represents actual physical or cloud storage.
 
