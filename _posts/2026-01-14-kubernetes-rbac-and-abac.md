@@ -161,4 +161,11 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+tldr;
+
+Subject + Role = RoleBinding                 -> Namespace Scoped
+Subject + ClusterRole = ClusterRoleBinding   -> Cluster Scoped
+
+Subject can be user, group or service account
+
 RBAC is used in modern systems as it's easier to maintain than ABAC.
