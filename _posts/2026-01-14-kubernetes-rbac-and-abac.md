@@ -71,7 +71,6 @@ This allows user alice to read Pods in the dev namespace.
 - Policies are static files
 - Changes require API server restart
 - Hard to audit and reason about
-- No reuse or delegation model
 - Poor scalability
 
 ABAC is largely considered legacy in Kubernetes.
@@ -163,9 +162,10 @@ roleRef:
 
 tldr;
 
+```
 Subject + Role = RoleBinding                 -> Namespace Scoped
 Subject + ClusterRole = ClusterRoleBinding   -> Cluster Scoped
 
 Subject can be user, group or service account
-
+```
 RBAC is used in modern systems as it's easier to maintain than ABAC.
