@@ -62,6 +62,15 @@ spec:
               number: 80
 ```
 
+### What happens when a user types site.com? When and how does it hit the ingress typically? Does it hit API server directly? If no, why not?
+
+When a user types site.com, DNS resolves to a load balancer IP, the request flows through the load
+balancer to the Ingress Controller, which routes it to a service and pod.
+User traffic never hits the Kubernetes API server because it is control-plane only, not part of the
+request data path.
+
+----
+
 Load Balancer (object type – LoadBalancer) works at Layer 4, while Ingress operates at Layer 7.
 Ingress is more flexible and powerful because it can route traffic based on host, path, headers, and 
 query parameters. It also supports TLS termination, authentication, and centralized HTTP/HTTPS routing 
