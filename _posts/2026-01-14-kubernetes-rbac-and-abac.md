@@ -90,6 +90,27 @@ RBAC is built around roles and bindings.
 
 ## RBAC Core Objects
 
+### RBAC apiGroups, resources and verbs
+
+**Mental model**
+- An RBAC rule says: allow these `verbs` on these `resources` in these `apiGroups`.
+
+**apiGroups**
+- Specifies which API group the resource belongs to.
+- `""` (empty string) = core API group (e.g., `pods`, `services`, `namespaces`, `configmaps`, `secrets`).
+- Other examples: `apps` (deployments), `batch` (jobs), `networking.k8s.io` (ingresses).
+
+**resources**
+- The Kubernetes object types the rule applies to.
+- Examples: `pods`, `namespaces`.
+- `pods/log` is a subresource (special endpoint on a resource).
+- Permission on `pods` does NOT imply permission on `pods/<subresource>`.
+- Subresources like `pods/log`, `pods/exec`, `pods/portforward` need explicit entries in `resources` with the required verbs.
+
+**verbs**
+- The actions allowed.
+- Common verbs: `get`, `list`, `watch`, `create`, `update`, `patch`, `delete`.
+
 ### Role (Namespace-scoped)
 
 ```yaml
