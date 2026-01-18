@@ -1,6 +1,6 @@
 ---
 title: "Linux - Command Line Cheatsheet"
-date: 2025-10-20 12:00:00 +0000
+date: 2026-01-18 05:00:00 +0530
 categories: [Linux]
 tags: [linux, cheatsheet]
 ---
