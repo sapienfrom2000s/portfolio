@@ -5,24 +5,24 @@ categories: [Linux]
 tags: [linux, cheatsheet]
 ---
 
-1. `tree`
+`tree`
 
 To see the hierarchy of a directory.
 
-2. `less`
+`less`
 
 To open a scrollable pager of a file.
 
-3. `head`
+`head`
 
 To see the first n lines of a file.
 
-4. `tail`
+`tail`
 
 To see the last -n lines of a file. `tail -f file` is also very useful when
 streaming is being done on that file.
 
-5. Hard Link and Soft Link
+`Hard Link and Soft Link`
 
 What is inode?
 -> Inode is a data structure which contains metadata about the file/directory. Whenever you try to
@@ -50,7 +50,7 @@ Memory:
 "Hard" = hard-attached to the data
 "Soft" = like a shortcut
 
-6. `file`
+`file`
 
 Tells the content type that a file contains. Eg.:
 ```zsh
@@ -58,16 +58,16 @@ Downloads % file Wireshark\ 4.6.0.dmg
 Wireshark 4.6.0.dmg: zlib compressed data
 ```
 
-7. `stat`
+`stat`
 
 Shows detailed metadata about file like: permissions, owner, size, timestamps.
 
-8. `du` vs `df`
+`du` vs `df`
 
 `du` - disk usage (works on directories)  
 `df` - disk free (only for partition)
 
-9. `sort`
+`sort`
 
 Examples:
 ```bash
