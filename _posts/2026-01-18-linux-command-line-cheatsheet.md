@@ -247,3 +247,22 @@ Execute permission != write permission:
 - Samantha has no write access to /etc/shadow.
 - Kernel blocks the write at system call level.
 - Internal logic never gets to execute the write.
+
+`Sticky bit`
+
+Purpose:
+
+- Directories (modern, most common): in a shared writable directory (like /tmp), it prevents users from deleting or renaming other users' files. Only the file owner, directory owner, or root can delete/rename entries.
+- Executables (historical/mostly obsolete): on older Unix systems, it improved performance by keeping a program's code ("text segment") cached in swap/memory after it exited so it could start faster next time.
+
+Why it's called "sticky":
+
+- Historically, the executable's code would stick in swap/memory.
+- Today, files in a shared directory stick to their owners (others can't remove them).
+
+How it's represented:
+
+ls -l:
+
+- Shows t in the "others execute" position for directories (e.g., drwxrwxrwt).
+- Shows T if sticky is set but others-execute isn't set(others can't go into the directory).
