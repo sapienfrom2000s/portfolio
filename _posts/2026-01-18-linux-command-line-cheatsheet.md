@@ -168,4 +168,82 @@ umask 022
 # files: 666 & ~022 = 644 → rw-r--r--
 ```
 
---To be continued--
+`SUID` and `SGID`
+
+- Normal user: can only change own password and must provide current password first.
+- Root: can change anyone's password without knowing it and bypass restrictions.
+
+How passwd actually works with SUID:
+
+The /etc/shadow file structure:
+```text
+root:$6$encrypted_hash...:19000:0:99999:7:::
+samantha:$6$encrypted_hash...:19000:0:99999:7:::
+john:$6$encrypted_hash...:19000:0:99999:7:::
+```
+Each line = one user's password info; users should only modify their own line.
+
+File permissions:
+```text
+-rw------- 1 root root /etc/shadow  (only root can read/write)
+-rwsr-xr-x 1 root root /usr/bin/passwd  (SUID bit set)
+```
+What happens when Samantha (or any user) runs passwd:
+
+- SUID makes the process run as root.
+- Process effective UID = 0 (root).
+- Process real UID = Samantha's UID (kernel tracks both).
+- Process can now read/write /etc/shadow.
+- Kernel allows it because effective UID = root.
+
+Internal logic checks real UID:
+
+- "Who started me?" -> Samantha.
+- "Allow her to only modify the line: samantha:..."
+- Prevents her from changing root's or john's password.
+
+Program writes only Samantha's line:
+
+- Reads entire file.
+- Modifies only her line.
+- Writes back to /etc/shadow.
+
+Alternative 1: what if we give write permission to all users?
+
+Attempt:
+```text
+-rw-rw-rw- 1 root root /etc/shadow  (world-writable)
+-rwxr-xr-x 1 root root /usr/bin/passwd  (no SUID, just execute)
+```
+What happens:
+
+- Process runs as Samantha.
+- Internal logic: "She can change her password."
+- Kernel allows write (file is world-writable).
+- Program modifies only her line.
+
+Also:
+
+- Samantha can bypass passwd entirely.
+- She can directly edit /etc/shadow with any text editor.
+- She can change root's password, delete other users, etc.
+
+Alternative 2: what if we only give execute permission?
+
+Attempt:
+```text
+-rw------- 1 root root /etc/shadow  (only root can write)
+-rwxr-xr-x 1 root root /usr/bin/passwd  (no SUID, just execute)
+```
+What happens:
+
+- Samantha can execute passwd.
+- Process runs as Samantha (process UID = Samantha).
+- Kernel won't allow write because she lacks write permissions.
+
+Execute permission != write permission:
+
+- Process runs as Samantha.
+- Samantha has no write access to /etc/shadow.
+- Kernel blocks the write at system call level.
+- Internal logic never gets to execute the write.
