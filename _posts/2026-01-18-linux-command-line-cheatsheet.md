@@ -266,3 +266,45 @@ ls -l:
 
 - Shows t in the "others execute" position for directories (e.g., drwxrwxrwt).
 - Shows T if sticky is set but others-execute isn't set(others can't go into the directory).
+
+`grep`
+
+Common patterns:
+```bash
+# Basic match
+grep "POST" app.log
+
+# Case-insensitive match
+grep -i "POST" app.log
+
+# Invert match (lines that do NOT match)
+grep -v "POST" app.log
+
+# Context around matches
+grep -C5 "POST" app.log    # before + after
+grep -A5 "POST" app.log    # after
+grep -B5 "POST" app.log    # before
+
+# Recursive search
+grep -r "POST" directory
+
+# Line numbers + filenames
+grep -n "POST" app.log
+grep -l "POST" app.log     # list filenames with matches
+
+# Match-only output + counting
+grep -o "POST" app.log
+grep -o "POST" app.log | wc -l
+
+# Extended regex examples
+grep -E '^ERROR' app.log
+grep -E 'ERROR$' app.log
+grep -E 'ERROR|WARNING' app.log
+grep -E '^4..$' app.log
+grep -E '^[234]00$' app.log
+grep -E 'app/api/v2/.*ui/user' app.log
+
+# Exit status (0 = found, 1 = not found)
+grep -q 'POST' app.log; echo $?
+```
+--To Be Continued--
