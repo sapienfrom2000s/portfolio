@@ -307,4 +307,70 @@ grep -E 'app/api/v2/.*ui/user' app.log
 # Exit status (0 = found, 1 = not found)
 grep -q 'POST' app.log; echo $?
 ```
---To Be Continued--
+
+`awk`
+
+Programming language for text processing. `awk` reads input line by line, splits each line into fields, and lets you write small programs to print, filter, and transform data.
+
+Basics and fields (field separator, whole line, and column access):
+
+```bash
+awk -F ',' '{print $0}' file.csv
+```
+- `-F ','` sets the field separator to a comma (default is whitespace).
+- `$0` means "the entire current line".
+
+```bash
+awk -F ',' '{print $1}' file.csv
+```
+- `$1` is the first field/column, `$2` is the second, etc.
+
+```bash
+awk -F ',' '{print $NF}' file.csv
+```
+- `NF` is the number of fields in the current line.
+- `$NF` is the last field in the line, no matter how many columns there are.
+
+```bash
+awk -F ',' '{print NR ":", $0}' file.csv
+```
+- `NR` is the current record (line) number.
+- Output looks like `1: <line contents>` for each each line
+
+Filters and matches (pattern matching and numeric comparisons):
+```bash
+awk '/ERROR/ {print}' app.log
+```
+- `/ERROR/` is a regex pattern.
+- For any line that matches the pattern, the action `{print}` runs.
+- `{print}` with no arguments prints the whole line (same as `print $0`).
+
+```bash
+awk '$4 > 200' app.log
+awk '$2 == 234 && $3 == 233' app.log
+awk '$9 ~ /^5/' access.log
+```
+
+Program structure (BEGIN / per-line / END):
+```bash
+awk 'BEGIN { } { } END { }' file
+```
+- `BEGIN { }` runs once before any input is read.
+- `{ }` (the middle block) runs for each line.
+- `END { }` runs once after all input is processed.
+- This structure is great for setting counters, computing totals, and printing summaries.
+
+Count values in a column (frequency table):
+```bash
+awk '{c[$2]++} END {for (i in c) print i, c[i]}' file
+```
+- `c[$2]++` increments a counter for the value in the second field.
+- The `END` block prints each distinct value and its count.
+- Output order is arbitrary because `awk` iterates associative arrays in hash order.
+
+Sample output:
+```text
+200 10
+400 5
+500 3
+```
