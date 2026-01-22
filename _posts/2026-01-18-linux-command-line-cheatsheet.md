@@ -308,6 +308,58 @@ grep -E 'app/api/v2/.*ui/user' app.log
 grep -q 'POST' app.log; echo $?
 ```
 
+`sed`
+
+Stream editor for fast, non-interactive text edits. 
+
+- `sed` processes input line by line.
+- You give it commands like substitute (`s///`), delete (`d`), print (`p`).
+- By default, it prints every line after applying commands. Use `-n` to suppress auto-print and print only what you choose. Also, p can be used with g.
+
+```bash
+# Replace first match per line
+sed 's/error/ERROR/' app.log
+
+# Replace all matches per line (global)
+sed 's/POST/HTTP_POST/g' app.log
+
+# Use a different delimiter when slashes exist in the pattern
+sed 's|/api/v1|/api/v2|g' access.log
+```
+- `s/old/new/` replaces the first `old` per line.
+- Add `g` to replace all matches in the line.
+- Any delimiter works (`s|a|b|` is often easier for paths).
+
+Print only matching lines (like `grep`, but with transformations if needed):
+```bash
+sed -n '/ERROR/p' app.log
+```
+- `-n` turns off default printing.
+- `/ERROR/` selects matching lines; `p` prints them.
+
+Delete lines (filtering):
+```bash
+# Delete lines that match a pattern
+sed '/DEBUG/d' app.log
+
+# Delete a line range (inclusive)
+sed '5,12d' app.log
+```
+- `/pattern/d` removes matching lines from output.
+- `start,endd` drops a numeric line range.
+
+Targeted edits by line range:
+```bash
+# Only change lines 10 to 20
+sed '10,20s/timeout=30/timeout=60/' config.ini
+```
+- Line ranges let you be precise without touching the rest of the file.
+
+```bash
+# GNU sed (Linux): in-place edit(i flag), or it will print the changes to only stdout
+sed -i 's/ENV=dev/ENV=prod/' .env
+```
+
 `awk`
 
 Programming language for text processing. `awk` reads input line by line, splits each line into fields, and lets you write small programs to print, filter, and transform data.
