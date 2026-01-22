@@ -426,3 +426,40 @@ Sample output:
 400 5
 500 3
 ```
+
+`systemd`
+
+Default init system on most modern Linux distros.
+
+```bash
+# Service status and lifecycle
+systemctl status nginx
+systemctl start nginx
+systemctl stop nginx
+systemctl restart nginx
+systemctl reload nginx
+
+# Enable/disable on boot
+systemctl enable nginx
+systemctl disable nginx
+
+# Show unit file + drop-ins
+systemctl cat nginx
+systemctl show nginx
+```
+- `status` is the first thing you check in production; it shows logs and the last exit code.
+- `reload` sends a reload signal if the service supports it (no downtime).
+- `enable` creates symlinks so the service starts at boot.
+
+Logs with journald (the other 20% that saves you in incidents):
+```bash
+# Logs for a unit
+journalctl -u nginx
+
+# Follow logs like tail -f
+journalctl -u nginx -f
+
+# Logs since a time
+journalctl -u nginx --since "1 hour ago"
+```
+- `journalctl` is centralized logs; you rarely grep files directly on systemd systems.
