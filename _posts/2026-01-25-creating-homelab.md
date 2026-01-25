@@ -90,6 +90,34 @@ The flow looks like the following:
 
 Macboook(making curl request) -> Router -> Elitebook -> LoadBalancer(Metallb) -> Ingress Service -> Ingress Controller -> Service(api-v1) -> Pod(api-v1)
 
+## Curl in action
+
+Making request from Mac
+
+```
+➜  portfolio git:(main) curl http://api-v1.local -v
+* Host api-v1.local:80 was resolved.
+* IPv6: (none)
+* IPv4: 192.168.1.240
+*   Trying 192.168.1.240:80...
+* Connected to api-v1.local (192.168.1.240) port 80
+> GET / HTTP/1.1
+> Host: api-v1.local
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Server: nginx/1.29.4
+< Date: Sun, 25 Jan 2026 18:41:46 GMT
+< Content-Type: text/plain; charset=UTF-8
+< Content-Length: 13
+< Connection: keep-alive
+<
+* Connection #0 to host api-v1.local left intact
+Hello, World!
+```
+
 ## Proud Owner of my old EliteBook
 
 Bought it for 20k 4 years back to learn coding. Didn't know that it will serve me this well. Thanks!!!
