@@ -52,9 +52,9 @@ my public key to the authorized_keys file on my old laptop.
 
 Docs - https://kubernetes.io/docs/setup/production-environment/
 
-I am running docker which uses containerd to manager container's lifecycle. Even though, containerd is CRI
-compliant, I wanted to try out the older cri-dockerd. Since, I will be running a single node cluster, all the
-resources along with kubelet will run here itself. Kubelet will constantly track etcd to see if it has anything
+I am running docker which uses containerd to manage container's lifecycle. Even though containerd is CRI
+compliant, I wanted to try out cri-dockerd. Since I will be running a single node cluster, all the
+resources along with kubelet will run here itself. Kubelet will constantly talk to the API server to see if it has anything
 to do and then will ask cri-dockerd to execute it, if it has to do anything around container lifecycle.
 
 I will be installing k8s v1.35. As per docs, pulled all the packages needed for initializing the cluster. Downloaded
@@ -70,7 +70,7 @@ external load balancers on it. I removed this configuration by following command
 
 ## Step 3 - Setting up IAC
 
-I needed some image that can be deployed on the cluster. Lot of great public images are available on the internet. But since, I
+I needed some image that can be deployed on the cluster. Lot of great public images are available on the internet. But since I
 wanted more control over the image, I went with the simpler approach of building my own image and hosting it on dockerhub. I also
 wanted to keep my cluster as code, so I went ahead, wrote all the files, committed it and pushed it to github.
 
@@ -80,12 +80,12 @@ Github - https://github.com/sapienfrom2000s/homelab
 
 Created the namespace and deployed the application simply by running `kubectl apply -f .` I was using ingress but there was no ingress
 controller running on the cluster that would do the routing. Installed the same via helm. Now, I needed to expose the cluster so that
-it can intercept traffic. There were two ways to go about it, either use external load balancer or use node port. Node Port felt quick
+it can intercept traffic. There were two ways to go about it, either use external load balancer or use node port. Node Port felt like a quick
 patch and non-scalable solution. So, I went ahead with external load balancer option. Went through docs of `metallb` and added it to
-the cluster via manifests. The docs also asked to configure the intended IP range for the load balancer. I used unused IP range of my
+the cluster via manifests. The docs also asked to configure the intended IP range for the load balancer. I used an unused IP range of my
 internal network. Had to configure the local system so that intended domain points to the load balancer IP. I edited /etc/hosts to achieve
 the same
 
 The flow looks like the following:
 
-Macboook(making curl request) -> Router -> Elitebook -> LoadBalancer(Metallb) -> Ingress(Load Balancer) -> Service(api-v1) -> Pod(api-v1)
+Macboook(making curl request) -> Router -> Elitebook -> LoadBalancer(Metallb) -> Ingress Service -> Ingress Controller -> Service(api-v1) -> Pod(api-v1)
