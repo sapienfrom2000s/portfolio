@@ -89,3 +89,7 @@ the same
 The flow looks like the following:
 
 Macboook(making curl request) -> Router -> Elitebook -> LoadBalancer(Metallb) -> Ingress Service -> Ingress Controller -> Service(api-v1) -> Pod(api-v1)
+
+## Proud owner of my old EliteBook
+
+<img src="{{site.baseurl}}/assets/img/elitebook.jpg">
