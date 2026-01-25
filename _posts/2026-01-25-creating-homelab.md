@@ -90,6 +90,8 @@ The flow looks like the following:
 
 Macboook(making curl request) -> Router -> Elitebook -> LoadBalancer(Metallb) -> Ingress Service -> Ingress Controller -> Service(api-v1) -> Pod(api-v1)
 
-## Say Hi to my old EliteBook
+## Proud Owner of my old EliteBook
+
+Bought it for 20k 4 years back to learn coding. Didn't know that it will serve me this well. Thanks!!!
 
 <img src="{{site.baseurl}}/assets/img/elitebook.jpg">
