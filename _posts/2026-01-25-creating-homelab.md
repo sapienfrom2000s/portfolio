@@ -39,10 +39,10 @@ There are 3 devices behind the router - Mac, Elite Book and My Phone. Since, all
 often connected to the same network, the router remembers and assigns them a definite and predictable
 IP each time.
 
-Router - 192.168.1.1
-Elite Book - 192.168.1.2
-Mac - 192.168.1.3
-My Phone - 192.168.1.4
+- Router - 192.168.1.1
+- Elite Book - 192.168.1.2
+- Mac - 192.168.1.3
+- My Phone - 192.168.1.4
 
 I installed openssh-server on my old laptop so that I can ssh from my macbook easily. I was able to ssh
 into my old laptop from the internal network using password. But I wanted to bypass this step. So, I added
