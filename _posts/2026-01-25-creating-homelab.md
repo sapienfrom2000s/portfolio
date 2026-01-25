@@ -118,8 +118,6 @@ Making request from Mac
 Hello, World!
 ```
 
-## Proud Owner of my old EliteBook
-
-Bought it for 20k 4 years back to learn coding. Didn't know that it will serve me this well. Thanks!!!
+## Hardware that powers the cluster
 
 <img src="{{site.baseurl}}/assets/img/elitebook.jpg">
