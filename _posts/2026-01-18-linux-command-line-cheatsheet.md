@@ -100,16 +100,19 @@ Useful flags:
 10. Permissions
 
 For files:
+
 `r` = read contents  
 `w` = change contents  
 `x` = run/execute
 
 For directories:
+
 `r` = list names (`ls`)  
 `w` = create/delete/rename inside (needs `x` too)  
 `x` = enter/traverse (`cd`), access files if you know the name
 
 Numeric values:
+
 `r` - 4  
 `w` - 2  
 `x` - 1
