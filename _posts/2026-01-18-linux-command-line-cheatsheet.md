@@ -454,7 +454,7 @@ systemctl show nginx
 - `reload` sends a reload signal if the service supports it (no downtime).
 - `enable` creates symlinks so the service starts at boot.
 
-Logs with journald (the other 20% that saves you in incidents):
+Logs with journald:
 ```bash
 # Logs for a unit
 journalctl -u nginx
