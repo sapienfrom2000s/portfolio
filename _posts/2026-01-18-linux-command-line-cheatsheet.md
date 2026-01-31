@@ -34,7 +34,7 @@ Let's say you have a original file `f`. You can create a hard link to `f` by `ln
 points to the same node as the old one. Deleting one doesn't affect the other as the underlying `inode` is
 not deleted as someone else is referencing it.
 
-Soft Link
+Soft Link(aka. Sym Link)
 
 Soft link is a file which points to another file. It is created using `ln -s f dup-soft`. The new file
 points to the original file. If original file is deleted, the sym link no longer works as the file that it
