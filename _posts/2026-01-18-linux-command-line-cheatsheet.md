@@ -97,6 +97,85 @@ Useful flags:
 -t set field delimiter (default: whitespace)
 ```
 
+`uniq`
+
+Filter out repeated adjacent lines (usually after `sort`).
+
+Examples:
+```bash
+# 1) Remove duplicates (needs sorted input)
+sort names.txt | uniq
+
+# 2) Count duplicates
+sort names.txt | uniq -c
+```
+
+Useful flags:
+```txt
+-c prefix lines by the number of occurrences
+-d show only duplicate lines
+```
+
+`paste`
+
+Merge lines from files side by side.
+
+Examples:
+```bash
+# 1) Combine two files column-wise (tab-separated)
+paste names.txt ages.txt
+
+# 2) Use a custom delimiter
+paste -d ',' names.txt ages.txt
+```
+
+Useful flags:
+```txt
+-d set delimiter (default: tab)
+```
+
+`cut`
+
+Extract specific columns from each line of a file.
+
+Examples:
+```bash
+# 1) Get 2nd column from a CSV
+cut -d ',' -f2 data.csv
+
+# 2) Get characters 1-10 from each line
+cut -c 1-10 file.txt
+```
+
+Useful flags:
+```txt
+-d field delimiter (default: tab)
+-f select fields (comma-separated or ranges)
+-c select character positions (e.g., 1-5)
+```
+
+`tr`
+
+Translate or delete characters (works on stdin).
+
+Examples:
+```bash
+# 1) Lowercase to uppercase
+echo "hello" | tr 'a-z' 'A-Z'
+
+# 2) Remove digits
+echo "a1b2c3" | tr -d '0-9'
+
+# 3) Squeeze repeated spaces into one
+echo "a   b     c" | tr -s ' '
+```
+
+Useful flags:
+```txt
+-d delete characters
+-s squeeze repeats
+```
+
 10. Permissions
 
 For files:
@@ -392,6 +471,16 @@ awk -F ',' '{print NR ":", $0}' file.csv
 - `NR` is the current record (line) number.
 - Output looks like `1: <line contents>` for each each line
 
+Substring by character position:
+```bash
+# From 2nd char, length 6
+awk '{print substr($0,2,6)}' file
+
+# From 2nd char to end of line (no length needed)
+awk '{print substr($0,2)}' file
+```
+- `substr(s, start, len)` and `len` is optional; omit it to go to end of line.
+
 Filters and matches (pattern matching and numeric comparisons):
 ```bash
 awk '/ERROR/ {print}' app.log
@@ -466,3 +555,9 @@ journalctl -u nginx -f
 journalctl -u nginx --since "1 hour ago"
 ```
 - `journalctl` is centralized logs; you rarely grep files directly on systemd systems.
+
+# Bash Scripting
+
+Refs:
+1. https://learnxinyminutes.com/bash/
+2. Hackerranks bash challenge
