@@ -2,7 +2,7 @@
 title: "Init System - Systemd"
 date: 2026-01-31 05:00:00 +0530
 categories: [Linux]
-tags: [linux, test]
+tags: [linux, systemd, init-system]
 ---
 
 # Motivation
@@ -120,3 +120,8 @@ To interact with systemd units, we use `systemctl`:
 - `systemctl restart SERVICE`
 - `systemctl enable SERVICE`
 - `systemctl disable SERVICE`
+
+
+Refs:
+
+1. https://documentation.suse.com/smart/systems-management/pdf/systemd-basics_en.pdf
