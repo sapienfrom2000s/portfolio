@@ -42,6 +42,7 @@ points to the original file. If original file is deleted, the sym link no longer
 was pointing to doesn't exist anymore.
 
 tldr;
+
 hard link creates a new file which points to the original file's inode.
 soft link creates a new inode to point to original file.
 
