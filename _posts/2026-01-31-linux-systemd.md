@@ -125,3 +125,4 @@ To interact with systemd units, we use `systemctl`:
 Refs:
 
 1. https://documentation.suse.com/smart/systems-management/pdf/systemd-basics_en.pdf
+2. https://bytebytego.com/guides/linux-boot-process-explained/
