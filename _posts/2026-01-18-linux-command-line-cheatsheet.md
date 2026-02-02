@@ -25,7 +25,8 @@ streaming is being done on that file.
 `Hard Link and Soft Link`
 
 What is inode?
--> Inode is a data structure which contains metadata about the file/directory. Whenever you try to
+
+Inode is a data structure which contains metadata about the file/directory. Whenever you try to
 open a file, the location of the content is fetched from the metadata stored in inode.
 
 Hard Link
@@ -44,11 +45,12 @@ tldr;
 hard link creates a new file which points to the original file's inode.
 soft link creates a new inode to point to original file.
 
-If underlying/original inode is deleted, the link(hard or soft) will not work. The inode is deleted only when the hard-link count becomes 0 (i.e., no hard links remain) and no process has it open.
+**Memory**
 
-Memory:
-"Hard" = hard-attached to the data
-"Soft" = like a shortcut
+1. Hard: name → inode → data
+2. Soft: name → inode → path → inode → data
+
+If underlying/original inode is deleted, the link(hard or soft) will not work. The inode is deleted only when the hard-link count becomes 0 (i.e., no hard links remain) and no process has it open.
 
 `file`
 
