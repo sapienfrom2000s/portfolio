@@ -617,6 +617,46 @@ Sample output:
 500 3
 ```
 
+`ufw`
+
+Uncomplicated Firewall for quick host-level rules (common on Ubuntu/Debian).
+Common patterns:
+```bash
+# Check status (use verbose for rules + defaults)
+sudo ufw status
+sudo ufw status verbose
+
+# Enable / disable
+sudo ufw enable
+sudo ufw disable
+
+# Allow a service or port
+sudo ufw allow OpenSSH
+sudo ufw allow 22
+sudo ufw allow 80/tcp
+
+# Deny a port
+sudo ufw deny 23
+
+# Allow from a specific IP
+sudo ufw allow from 203.0.113.10
+
+# Allow to a specific port from an IP
+sudo ufw allow from 203.0.113.10 to any port 5432 proto tcp
+
+# Delete a rule by number (from "ufw status numbered")
+sudo ufw status numbered
+sudo ufw delete 2
+```
+
+Useful flags:
+```txt
+status verbose   show defaults + active rules
+status numbered  list rules with indexes for deletion
+allow/deny       add rules (default is to apply immediately)
+enable/disable   toggle firewall on or off
+```
+
 `systemd`
 
 Default init system on most modern Linux distros.
