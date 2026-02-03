@@ -619,7 +619,7 @@ Sample output:
 
 `ufw`
 
-Uncomplicated Firewall for quick host-level rules (common on Ubuntu/Debian).
+Uncomplicated Firewall for quick host-level rules (built on top of `iptables`).
 Common patterns:
 ```bash
 # Check status (use verbose for rules + defaults)
