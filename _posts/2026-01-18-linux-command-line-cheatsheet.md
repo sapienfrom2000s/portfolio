@@ -17,6 +17,17 @@ To open a scrollable pager of a file.
 
 To see the first n lines of a file.
 
+```
+# first n lines
+head -n 10 file.txt
+
+# first c chars
+head -c 10 file.txt
+
+# offset
+head -n 22 | tail -n 11
+```
+
 `tail`
 
 To see the last -n lines of a file. `tail -f file` is also very useful when
@@ -70,6 +81,42 @@ Shows detailed metadata about file like: permissions, owner, size, timestamps.
 `du` - disk usage (works on directories)  
 `df` - disk free (only for partition)
 
+`lsblk`
+
+List block devices (disks, partitions, LVM, loop devices) in a tree.
+
+Quick terminologies:
+loop = Loop devices (or loopback devices) are a concept from Linux/Unix systems that let you treat a regular file as if it were a block device (like a hard disk or partition). Loop devices were needed because operating systems expect to mount filesystems from block devices (like /dev/sda1), but disk images are just regular files - so loop devices bridge this gap by presenting a regular file through the block device interface that the OS's mount system requires.
+
+LVM (Logical Volume Manager) is a Linux layer that manages storage flexibly instead of fixed partitions.
+It combines multiple disks into a single storage pool called a Volume Group.
+From this pool, you create Logical Volumes like /home or /var.
+Example: 100 GB + 200 GB disks become one 300 GB pool.
+You can later add another disk and extend /home without downtime.
+
+Examples:
+```bash
+# 1) Basic view (name, size, type, mountpoint)
+lsblk
+
+# 2) Show filesystem details
+lsblk -f
+
+# 3) Show sizes in bytes (no rounding)
+lsblk -b
+
+# 4) Custom columns
+lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT
+```
+
+Useful flags:
+```txt
+-f show filesystem info (FSTYPE, UUID, LABEL, etc.)
+-b sizes in bytes
+-o pick columns to display
+-p show full device paths (e.g., /dev/sda1)
+```
+
 `sort`
 
 Examples:
@@ -111,6 +158,9 @@ sort names.txt | uniq
 
 # 2) Count duplicates
 sort names.txt | uniq -c
+
+# 3) Print only lines that occur exactly once in a consecutive run
+sort names.txt | uniq -u
 ```
 
 Useful flags:
@@ -130,6 +180,9 @@ paste names.txt ages.txt
 
 # 2) Use a custom delimiter
 paste -d ',' names.txt ages.txt
+
+# 3) Paste 3 columns side by side (tab-separated)
+paste -d $'\t' - - -
 ```
 
 Useful flags:
