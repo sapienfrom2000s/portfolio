@@ -446,6 +446,48 @@ grep -E 'app/api/v2/.*ui/user' app.log
 grep -q 'POST' app.log; echo $?
 ```
 
+`find`
+
+Common patterns:
+```bash
+# Find by name (case-sensitive)
+find . -name "app.log"
+
+# Case-insensitive name
+find . -iname "readme.md"
+
+# Only files or only directories
+find /var/log -type f
+find /etc -type d
+
+# Find by extension
+find . -type f -name "*.log"
+
+# Modified in last N days
+find /var/log -type f -mtime -7
+
+# Larger than 100MB
+find /var -type f -size +100M
+
+# Combine conditions (AND is default)
+find . -type f -name "*.log" -mtime -3
+
+# OR with parentheses (escape them)
+find . \\( -name "*.log" -o -name "*.out" \\)
+
+# Exclude a directory
+find . -type f -name "*.log" -not -path "./node_modules/*"
+```
+
+Useful flags:
+```txt
+-name / -iname  match filename (case-sensitive / insensitive)
+-type           f = file, d = directory, l = symlink
+-mtime          modified time in days (-7 = last 7 days)
+-size           file size (+100M, -10k, +1G)
+-maxdepth       limit recursion depth
+```
+
 `sed`
 
 Stream editor for fast, non-interactive text edits. 
