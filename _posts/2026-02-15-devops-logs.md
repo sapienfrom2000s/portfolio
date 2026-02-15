@@ -17,4 +17,5 @@ Yesterday:
 Today
 
 1. Complete Docker Notes
-2. Complete S3
+2. Complete HW
+3. Complete S3
