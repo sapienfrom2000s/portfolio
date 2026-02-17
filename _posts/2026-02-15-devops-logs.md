@@ -8,7 +8,21 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 16/90
+Counter - 17/90
+
+Feb 17, 2026
+
+Yesterday
+
+1. Completed HW
+2. Started S3
+3. 13/33 completed
+
+Today
+
+1. Complete S3
+2. Complete Cloudfront and AWS Global Accelerator
+3. Complete 15/33
 
 Feb 16, 2026
 
