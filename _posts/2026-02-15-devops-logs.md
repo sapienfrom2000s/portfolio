@@ -8,9 +8,23 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 17/90
+Counter - 18/90
 
-Feb 17, 2026
+Feb 18, 2026
+
+Yesterday
+
+1. Completed S3
+2. Completed Cloudfront and AWS Global Accelerator
+3. SQS, SNS, Kinesis and Active MQ Done
+4. Current - 17/33
+
+Today
+
+1. Containers on AWS: ECS, Fargate, ECR & EKS
+2. Serverless Overviews from a Solution Architect Perspective
+3. Target - 19/33
+
 
 Yesterday
 
