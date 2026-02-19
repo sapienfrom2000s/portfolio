@@ -8,7 +8,20 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 18/90
+Counter - 19/90
+
+Feb 19, 2026
+
+Yesterday
+
+1. Completed Containers on AWS: ECS, Fargate, ECR & EKS
+2. Current - 18/33
+
+Today
+
+1. Complete Serverless Overviews from a Solution Architect Perspective
+2. Target - 19/33
+
 
 Feb 18, 2026
 
