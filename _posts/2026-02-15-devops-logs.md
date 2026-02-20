@@ -8,7 +8,22 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 19/90
+Counter - 20/90
+
+Feb 20, 2026
+
+Yesterday
+
+1. Serverless Overviews from a Solution Architect Perspective
+2. Current - 19/33
+
+Today
+
+1. Serverless Soln Architecture Discussions
+2. Database in AWS
+3. Use Cases of Data Analytics apps
+3. Target - 23/33
+
 
 Feb 19, 2026
 
