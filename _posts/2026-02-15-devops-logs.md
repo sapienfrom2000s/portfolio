@@ -8,7 +8,25 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 21/90
+Counter - 22/90
+
+Feb 21, 2026
+
+Yesterday
+
+1. Serverless Soln Architecture Discussions
+2. Revised IAM, EC2, Security Groups, Purchasing Options,
+Private & Public IPs, Placement Groups, Elastic Network Interface,
+EBS Volumes, EBS Volume Types, EBS Snapshots, AMI, EC2 Instance Store,
+EBS Encryption, EFS
+3. Cloud Trail, CloudWatch and Config
+4. Current - 24/33
+
+Today
+
+1. IAM - Advanced
+2. AWS Security and Encryption
+3. Target - 26/33
 
 Feb 20, 2026
 
