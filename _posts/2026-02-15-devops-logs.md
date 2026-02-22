@@ -14,13 +14,12 @@ Feb 21, 2026
 
 Yesterday
 
-1. Serverless Soln Architecture Discussions
-2. Revised IAM, EC2, Security Groups, Purchasing Options,
+1. Revised IAM, EC2, Security Groups, Purchasing Options,
 Private & Public IPs, Placement Groups, Elastic Network Interface,
 EBS Volumes, EBS Volume Types, EBS Snapshots, AMI, EC2 Instance Store,
 EBS Encryption, EFS
-3. Cloud Trail, CloudWatch and Config
-4. Current - 24/33
+2. Cloud Trail, CloudWatch and Config
+3. Current - 24/33
 
 Today
 
