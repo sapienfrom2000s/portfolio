@@ -24,6 +24,9 @@ Today
 
 1. AWS - Revision
 
+Notes - I think revision should be done everyday so that the old stuff doesn't go away. The updates will now contain
+a dedicated section on revision
+
 Yesterday
 
 1. Serverless Overviews from a Solution Architect Perspective
