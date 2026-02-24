@@ -8,7 +8,17 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 22/90
+Counter - 24/90
+
+Feb 23, 2026
+
+Today
+
+1. AWS Notes
+
+Yesterday
+
+1. Completed AWS
 
 Feb 21, 2026
 
