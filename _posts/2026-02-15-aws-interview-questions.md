@@ -209,13 +209,28 @@ prioritizing uptime over immediate consistency.
 
 
 Q. NACL vs Security Groups. When to use each one?
-A.
+A. Security Groups are stateful while NACL are stateless. NACL provides more control while SGs are simpler to configure.
 
 Q. EKS vs ECS vs Docker Container on VM vs VM. When to use each one?
-A.
+A. Use a plain VM (EC2) when you want maximum simplicity or need OS-level control. It’s best for legacy apps, tightly stateful systems, custom drivers, or when you only have a few services and low deployment frequency. You manage everything (OS, scaling, deployments), but the operational model is straightforward. Good for small, stable setups where orchestration would be overkill.
+
+Use Docker on a VM when you want the packaging and consistency benefits of containers without adopting a full orchestrator. This works well for small 
+teams running a handful of services or workers. You still manage scaling, placement, and deployments yourself, but builds and rollbacks are cleaner. It’s 
+often a transitional step before moving to ECS or EKS.
+
+Use ECS (especially Fargate) when you want managed container orchestration with minimal operational overhead and you’re fully on AWS. ECS integrates 
+tightly with IAM, ALB, CloudWatch, and other AWS services, and is simpler than Kubernetes. Fargate removes server management entirely; ECS on EC2 is more 
+cost-efficient for steady, high utilization workloads. ECS is cheaper as it's simpler.
+
+Use EKS when you specifically need Kubernetes—multi-cloud portability, advanced scheduling, service mesh, GitOps tooling, or a standardized K8s ecosystem 
+across teams. It offers the most flexibility and power but comes with higher complexity and operational effort. Choose it when Kubernetes is a strategic 
+requirement, not just a preference. EKS is expensive. You pay for the Kubernetes control plane, worker nodes, and any additional services you use.
 
 Q. What is the difference between a VPC and a subnet?
-A.
+A. A VPC (Virtual Private Cloud) is your entire private network in the cloud. It defines the overall IP address range and acts as the main boundary for routing, security, and network isolation—like your virtual data center.
+
+A subnet is a smaller segment inside a VPC, carved from its IP range, where you place resources like EC2 instances or databases. Subnets help you organize 
+and isolate workloads (e.g., public subnets for web servers, private subnets for databases).
 
 Q. What is connection Pooling?
 A. Connection pooling is a technique used to improve application performance by maintaining and reusing a fixed set of pre-established connections 
@@ -229,4 +244,130 @@ requests continue waiting and may eventually fail with a timeout error if a conn
 from being overwhelmed while ensuring controlled resource usage and better scalability. Connection Pooling is usually handled by the application or the database driver.
 
 Q. Problems with lambda? Why use servers when you can use lambda functions?
+A. Lambda functions are great for event-driven, short-lived tasks, but they come with real limitations: cold start latency can hurt performance for 
+time-sensitive applications, execution time is capped (15 minutes on AWS), and they can get expensive at high, sustained traffic volumes where a 
+traditional server would be cheaper. Debugging and local testing are also trickier, and managing state or long-running connections (like WebSockets or 
+background jobs) is awkward without additional services. For simple, sporadic workloads, lambdas shine — but for always-on, stateful, or compute-heavy 
+applications, dedicated servers often make more sense.
+
+Q. Where are route tables defined in aws?
+A. Route tables in AWS are defined inside a VPC (Virtual Private Cloud). Each VPC has a main route table by default, and you can create additional custom 
+route tables and associate them with specific subnets. They’re managed in the VPC service (VPC → Route Tables) and control how traffic is routed within 
+the VPC and to external destinations like the internet gateway, NAT gateway, VPC peering connections, or Transit Gateway.
+
+Q. In AWS, there is no option to create a public and private subnet. How can it be configured.
+A. In AWS, a subnet is not inherently “public” or “private” — it’s determined by its route table. A subnet becomes public if its route table includes a route to an Internet Gateway (0.0.0.0/0 → IGW) and instances have public IPs; it becomes private if it does not have a direct route to the Internet Gateway (typically routing outbound traffic through a NAT Gateway in a public subnet instead).
+
+Q. What the fuck is hybrid networking?
+A. Hybrid networking in AWS refers to connecting your on-premises data center (or other cloud environments) with your AWS Virtual Private Cloud (VPC) so 
+they function as a single, integrated network. This is typically done using services like AWS Site-to-Site VPN (over the internet) or AWS Direct Connect 
+(dedicated private connection).
+
+Q. Why use site-to-site vpn with public internet?
+A. While it runs over the public internet, traffic is protected using IPsec encryption. Layer 3 encryption.
+
+Q. Transit Gateway vs VPC Peering?
+A. Transit Gateway is a service that enables you to connect multiple VPCs, on-premises networks, and AWS Direct Connect locations. It provides a single 
+networking interface for all your connections, simplifying management and reducing costs. VPC Peering allows you to establish a private connection 
+between two VPCs, enabling direct communication between them without the need for internet gateways or NAT gateways.
+
+Q. Suppose I have a ecommerce website and I want to design a disaster recovery solution, how would you achieve it?
+A. Active–Passive (Cold/Warm Standby):
+In this approach, your primary eCommerce application runs in one region or data center (active), while a secondary environment (passive) is kept on standby in another region. The passive setup may range from minimal infrastructure (cold standby) to fully provisioned but not serving traffic (warm standby). Data is continuously replicated from primary to secondary (e.g., database replication, object storage sync). If a disaster occurs, traffic is switched to the passive site via DNS failover or load balancer changes. This model is simpler and more cost-effective but involves some recovery time (higher RTO) and potentially minor data loss depending on replication lag (RPO).
+
+Active–Active (Hot Standby / Multi-Region Live):
+In this approach, the application runs simultaneously in two or more regions, and all environments actively serve user traffic. Traffic is distributed using global load balancers or geo-DNS, and databases use multi-region replication (often with conflict resolution strategies). If one region fails, traffic automatically shifts to the remaining healthy region with little to no downtime. This provides very low RTO and RPO, making it ideal for high-availability eCommerce platforms, but it is more complex and expensive due to synchronization challenges, consistency management, and operational overhead.
+
+
+Q. Suppose I have a ecommerce website and I want to achieve HA with minimum latency. We are using Postgres. How would you do it?
+A. Primary–Replica (Streaming Replication + Auto Failover):
+You run one primary PostgreSQL instance for writes and one or more replicas for reads using streaming replication. Read traffic (product listings, search, browsing) goes to replicas to reduce load and improve latency, while automatic failover tools like Patroni or managed cloud HA promote a replica if the primary fails. This is simple, cost-effective, and works very well for read-heavy eCommerce workloads, though write scalability is limited since there is still only one writer.
+
+Multi-Region Active–Active (Logical / Distributed Postgres):
+In this approach, multiple regions can accept writes using logical replication or distributed Postgres solutions (like Citus or Postgres-compatible distributed databases). Traffic is routed to the nearest region to minimize latency globally, and if one region fails, others continue serving traffic. This provides strong availability and low global latency, but adds complexity around conflict resolution, consistency management, and operational overhead.
+
+Synchronous Replication Cluster (Strong Consistency HA):
+Here, PostgreSQL uses synchronous replication where transactions are committed only after replicas acknowledge them, ensuring zero data loss (RPO = 0). Cluster managers handle leader election and failover automatically, making it ideal for critical eCommerce operations like orders and payments. The tradeoff is slightly higher write latency because commits wait for replica confirmation, and it works best within low-latency zones (same region or nearby data centers).
+
+Q. Name best security practices in AWS in each layer ie. edge, LB, compute, data and Foundation.
+A. Edge (DNS / CDN / Public Entry)
+
+Use AWS WAF + Shield for DDoS and OWASP protection.
+Put CloudFront in front of public apps to reduce origin exposure.
+Enforce HTTPS everywhere (ACM certificates, modern TLS, HSTS).
+Restrict origin access (OAC for S3, allow only CDN → origin).
+Enable DNS security & logging (Route 53 logging, MFA for domain changes).
+
+Load Balancer (ALB / NLB / API Gateway)
+
+TLS termination with strong security policies (ACM-managed certs).
+Attach WAF to ALB/API Gateway for L7 filtering.
+Restrict Security Groups to required ports and trusted sources only.
+Enable access logging (ALB/NLB logs to S3 + monitoring alerts).
+Prefer internal LBs; avoid public exposure unless required.
+
+Compute (EC2 / ECS / EKS / Lambda)
+
+Use IAM roles with least privilege (no hardcoded credentials).
+Patch and scan regularly (SSM Patch Manager, Inspector, ECR scanning).
+Store secrets in Secrets Manager/SSM, enable rotation.
+Deploy workloads in private subnets with restricted egress.
+Enable runtime monitoring (GuardDuty, logging, disable IMDSv1).
+
+Data (S3 / RDS / EBS / DynamoDB, etc.)
+
+Encrypt data at rest using KMS (SSE-KMS, encrypted volumes/DBs).
+Enforce TLS encryption in transit.
+Block public access to S3; use least-privilege bucket/DB policies.
+Enable backups & PITR, test restore regularly.
+Enable audit logging (CloudTrail data events, DB logs).
+
+Foundation (IAM / Org / Logging / Network Baseline)
+
+Adopt multi-account strategy (prod/dev/security/log-archive).
+Enable org-wide CloudTrail + centralized logging.
+Enforce MFA & SSO, lock down root account.
+Apply SCPs & least-privilege IAM policies.
+Enable Security Hub, GuardDuty, Config for continuous compliance & detection.
+
+Q. Best security model without investing too much money on it for small grade companies
+A. For a small company using AWS, the best cost-effective security model is a shared responsibility + defense-in-depth approach built on native AWS services. Start with strong IAM hygiene (least-privilege roles, no root usage, MFA enforced, IAM Identity Center), organize accounts using AWS Organizations, and isolate workloads with VPCs, private subnets, and security groups. Enable built-in monitoring like CloudTrail, GuardDuty, and AWS Config (basic rules) for visibility and threat detection at low cost, and use Security Hub (foundational standards) for centralized posture management. Protect data with S3 block public access, encryption by default (KMS), and regular backups via AWS Backup. Add a WAF + Shield Standard for internet-facing apps and automate patching with SSM Patch Manager. This setup leverages mostly native AWS tools, minimizes third-party spend, and provides strong baseline security without heavy investment.
+
+Q. How can a third party access DB? DB is in private subnet. What are the ways?
+A. If your database is in a private subnet, a third party cannot access it directly over the internet, so you must provide controlled network or service-level access: the most common approaches are setting up a site-to-site VPN to connect their network to your VPC, using a client VPN or zero-trust solution for individual users, or providing access through a hardened bastion/jump host (preferably via managed session services instead of open SSH); for more secure enterprise setups, you can use private connectivity options like AWS PrivateLink, Azure Private Link, or GCP Private Service Connect; in many cases it’s safer to avoid direct DB access entirely and instead expose a secured API, provide a read replica, share data via a warehouse, or export controlled datasets to object storage; publicly exposing the DB with IP allowlisting is technically possible but generally discouraged due to increased risk, so the best approach depends on whether access is for humans or applications and whether it requires read-only or read-write permissions.
+
+Q. What is AWS Inspector?
+A. EC2 instances, ECR container images, and Lambda functions—for software vulnerabilities and unintended network exposure
+
+Q. Pillars of well architected framework
+A. There are 6 pillars:
+Operational Excellence focuses on continuous improvement and efficient operations.
+Security ensures protection of data, systems, and access controls.
+Reliability ensures systems recover quickly and perform consistently.
+Performance Efficiency focuses on optimal use of computing resources.
+Cost Optimization and Sustainability aim to reduce expenses and environmental impact.
+
+Q. How do you reduce the cost of AWS services?
+A. There are several ways to reduce the cost of AWS services:
+1. Utilize Reserved Instances or Savings Plans to lock in pricing for EC2 instances.
+2. Optimize resource utilization by using Auto Scaling groups and Elastic Load Balancing.
+3. Use AWS Lambda for serverless computing to reduce infrastructure costs.
+4. Implement cost monitoring and alerting using AWS Cost Explorer and AWS Budgets.
+5. Regularly review and optimize your AWS usage patterns to identify and eliminate unnecessary expenses.
+
+Q. CloudFormation vs Terraform. How will you choose one over the other?
+A. CloudFormation is best if you’re fully committed to AWS and want deep native integration, tighter IAM/security alignment, and no extra tooling beyond AWS (great for AWS-only teams and 
+enterprises prioritizing governance). Terraform is better if you need multi-cloud or hybrid support, a larger ecosystem of providers, more modular/reusable infrastructure patterns, and 
+generally more flexibility in state management and workflows. In short: choose CloudFormation for AWS-centric simplicity and tight integration; choose Terraform for cross-cloud 
+portability, broader provider support, and flexibility.
+
+
+Q. Gateway LB.
+A. Gateway Load Balancer (GWLB) is an AWS load balancer that transparently routes and scales traffic to virtual appliances (e.g., firewalls, IDS/IPS) at Layer 3 using GENEVE encapsulation.
+Use it when you need centralized, inline traffic inspection or security appliance insertion across VPCs without changing application architecture.
+
+Q. API Gateway vs Application Load Balancer.
+A. API Gateway is best for building RESTful APIs and integrating with other AWS services, while Application Load Balancer is best for load balancing HTTP/HTTPS traffic to EC2 instances or containers.
+
+Q. Admin vs Root User
 A.
