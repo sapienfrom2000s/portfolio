@@ -10,6 +10,16 @@ Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logb
 
 Counter - 24/90
 
+Feb 25, 2026
+
+Today
+
+1. AWS Notes
+
+Yesterday
+
+1. AWS Notes
+
 Feb 23, 2026
 
 Today
