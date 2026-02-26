@@ -10,6 +10,11 @@ Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logb
 
 Counter - 26/90
 
+Feb 26, 2026
+
+Was listening to a Urdu Podcast, the narrator tells that hard work is when you are doing something you don't want to do or you don't have
+the drive to do. Today, again I am commiting to complete 4 hours of studying.
+
 Feb 25, 2026
 
 Today
