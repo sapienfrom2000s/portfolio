@@ -8,7 +8,21 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 26/90
+Counter - 30/90
+
+Mar 1, 2026
+
+Busy from last couple of days as was involved in migration of infra from gcloud to azure. Back to business. Working on AWS Notes,
+I would say around 60% is done. Focus will be to complete it in 2-3 days and then start either terraform or CI/CD.
+
+Yesterday
+
+1. AWS Notes - Part 2
+
+Today
+
+1. AWS Notes - Part 3(WIP)
+
 
 Feb 26, 2026
 
