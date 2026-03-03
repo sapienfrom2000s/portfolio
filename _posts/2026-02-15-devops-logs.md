@@ -8,7 +8,12 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 30/90
+Counter - 31/90
+
+Mar 2, 2026
+
+It seems like AWS Notes will/should take two more days to complete. Should be done by Wednesday. Wednesday is off for me as well. So,
+I will get more time than usual to work. BTW, topics for yesterday were SQS, SNS and ECS.
 
 Mar 1, 2026
 
