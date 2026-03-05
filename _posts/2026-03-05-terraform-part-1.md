@@ -89,3 +89,182 @@ Note:
 
 In short:
 .lock.info = temporary file that tracks who is locking the Terraform state.
+
+### Providers
+
+A Terraform provider is a plugin that lets Terraform interact with an external platform (like AWS, Azure, GCP, Kubernetes) and create/manage 
+resources there. Providers are of three types: Official providers maintained by HashiCorp (e.g., hashicorp/aws), Partner providers maintained by 
+verified companies but published on the Terraform Registry (e.g., datadog/datadog, mongodb/mongodbatlas), and Community providers maintained by 
+independent developers or the open-source community, which may have varying levels of maintenance and reliability.
+
+### How is multi-region infrastructure configured?
+
+- Terraform uses **multiple provider configurations** for different regions
+- Each provider instance can have an **alias**
+- Resources specify which provider (region) they should use
+
+Example:
+
+- Define providers for two regions
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "west"
+  region = "us-west-2"
+}
+
+- Create resources in different regions
+
+resource "aws_s3_bucket" "east_bucket" {
+  bucket = "east-bucket-demo"
+}
+
+resource "aws_s3_bucket" "west_bucket" {
+  provider = aws.west
+  bucket   = "west-bucket-demo"
+}
+
+- Terraform creates one bucket in **us-east-1**
+- Terraform creates another bucket in **us-west-2**
+
+### How is hybrid cloud infrastructure configured?
+
+- Terraform uses **multiple providers for different cloud platforms**
+- Each provider manages resources in its respective cloud
+- A single Terraform configuration can provision resources across clouds
+
+Example:
+
+- Define providers for AWS and GCP
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "google" {
+  project = "my-project"
+  region  = "us-central1"
+}
+
+- Create resources in both clouds
+
+resource "aws_s3_bucket" "aws_bucket" {
+  bucket = "aws-demo-bucket"
+}
+
+resource "google_storage_bucket" "gcp_bucket" {
+  name     = "gcp-demo-bucket"
+  location = "US"
+}
+
+- Terraform provisions resources in **AWS and GCP**
+- This allows managing **hybrid cloud infrastructure from one configuration**
+
+### What is an input variable?
+
+- Input variables allow **passing values into Terraform configurations**
+- They make configurations **reusable and flexible**
+- Values can be provided via **CLI, tfvars files, or defaults**
+
+Example:
+
+- Define an input variable
+
+variable "bucket_name" {
+  type = string
+}
+
+- Use the variable in a resource
+
+resource "aws_s3_bucket" "example" {
+  bucket = var.bucket_name
+}
+
+- When running Terraform, provide the value
+- Terraform creates the bucket using the provided name
+
+### What is an output variable?
+
+- Output variables expose **useful information after Terraform applies**
+- They help **share values between modules or show results**
+- Commonly used for **resource IDs, URLs, or IP addresses**
+
+Example:
+
+- Define an output variable
+
+output "bucket_name" {
+  value = aws_s3_bucket.example.bucket
+}
+
+- After `terraform apply`, Terraform prints the output
+- Other modules or systems can reference this value
+
+### How is a Terraform directory structured?
+
+- Terraform configurations are usually organized into **separate files by purpose**
+- Terraform automatically loads all `.tf` files in the directory
+- This helps keep infrastructure code **clean and maintainable**
+
+Common structure:
+
+- main.tf — primary resources and core infrastructure  
+- providers.tf — provider definitions and configurations  
+- variables.tf — input variable declarations  
+- outputs.tf — output variables  
+- terraform.tfvars — values for input variables
+
+### What is `.tfvars` file?
+
+- `.tfvars` files store **values for Terraform input variables**
+- They separate **configuration (variables.tf)** from **environment-specific values**
+- Terraform automatically loads `terraform.tfvars` if present
+
+Example:
+
+- Define a variable
+
+variable "region" {
+  type = string
+}
+
+- Provide value in `terraform.tfvars`
+
+region = "us-east-1"
+
+- Terraform reads the value from `.tfvars` during execution
+- This avoids hardcoding values in configuration
+
+Use cases:
+
+- **Environment-specific configs** — different values for dev, staging, prod  
+- **Team collaboration** — same Terraform code, different configs per team  
+- **Secrets separation** — keep sensitive values outside main code  
+- **Reusability** — reuse the same Terraform module across multiple setups
+
+### What are built-in functions in Terraform?
+
+- Terraform provides **built-in functions** to manipulate values, evaluate logic, and transform data inside configurations
+- They help make configurations **dynamic and reusable**
+
+Common examples:
+
+- conditionals — choose values based on conditions  
+  example: `var.env == "prod" ? 3 : 1`
+
+- length() — returns the number of elements in a list or string  
+  example: `length(var.subnets)`
+
+- maps / lookup() — access values from key-value maps  
+  example: `lookup(var.instance_types, "prod")`
+
+- concat() — combine multiple lists  
+  example: `concat(var.public_subnets, var.private_subnets)`
+
+- format() — build formatted strings  
+  example: `format("%s-%s", var.env, "bucket")`
+
+These functions help **compute values instead of hardcoding them** in Terraform configurations.
