@@ -8,7 +8,17 @@ tags: [Logs]
 Started this journey on Jan 28, 2026. I committed to spend atleast 4 hours dedicating to it. This will run till April 28, 2026.
 Today is Feb 15, 2026, I have missed 3-4 days of studying. Maintaining this logbook to make sure that I stay on track.
 
-Counter - 32/90
+Counter - 34/90
+
+Mar 5, 2026
+
+Yesterday
+
+1. Started Terraform. There are 8 parts to it. Completed 2/8
+
+Today
+
+1. Target today is to complete (3 + 3) today
 
 Mar 3, 2026
 
