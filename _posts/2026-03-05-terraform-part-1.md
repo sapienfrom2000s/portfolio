@@ -268,3 +268,95 @@ Common examples:
   example: `format("%s-%s", var.env, "bucket")`
 
 These functions help **compute values instead of hardcoding them** in Terraform configurations.
+
+## Modules in terraform
+
+### Why were modules needed in Terraform?
+
+- In general, a module is a **self-contained building block** of a larger system
+- The same idea is useful in infrastructure too, because real-world infrastructure becomes large very quickly
+- Without modules, Terraform code would become **repetitive, hard to manage, and difficult to standardize**
+
+Why this problem happens in Terraform:
+
+- Many infrastructure patterns repeat again and again
+- Example: every service may need a VPC, security groups, IAM roles, databases, buckets, etc.
+- Writing the same Terraform code repeatedly for each setup leads to **duplication**
+- Duplication makes changes harder, increases mistakes, and creates inconsistency across environments
+
+This is why Terraform introduced modules:
+
+- A **Terraform module** is a reusable container of Terraform configuration
+- It groups related resources into a single logical unit
+- Instead of rewriting the same infrastructure code, you define it once as a module and reuse it with different inputs
+
+Example:
+
+- Create one module for an S3 bucket or VPC
+- Pass different values like name, region, tags, CIDR block
+- Reuse the same module in dev, staging, and prod
+
+### Concrete Example
+
+Without modules, the same infrastructure pattern gets repeated.
+
+Example without modules:
+
+resource "aws_s3_bucket" "logs_dev" {
+  bucket = "app-dev-logs"
+
+  tags = {
+    env = "dev"
+  }
+}
+
+resource "aws_s3_bucket" "logs_prod" {
+  bucket = "app-prod-logs"
+
+  tags = {
+    env = "prod"
+  }
+}
+
+Using modules:
+
+module "logs_dev" {
+  source      = "./modules/s3_bucket"
+  bucket_name = "app-dev-logs"
+  env         = "dev"
+}
+
+module "logs_prod" {
+  source      = "./modules/s3_bucket"
+  bucket_name = "app-prod-logs"
+  env         = "prod"
+}
+
+- The actual S3 bucket definition lives inside `modules/s3_bucket`
+- The module is reused with different inputs
+- Infrastructure becomes easier to maintain and standardize
+
+### What is Terraform Registry?
+
+- **Terraform Registry** is a public repository where Terraform providers and modules are published
+- It allows users to **discover, reuse, and share Terraform modules**
+- Modules from the registry can be used directly in Terraform configurations
+
+Example:
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.1.0"
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+}
+
+- Terraform downloads the module from the registry during `terraform init`
+- This avoids writing common infrastructure patterns from scratch
+
+Use cases:
+
+- Reuse well-tested infrastructure modules
+- Follow community best practices
+- Speed up infrastructure development
