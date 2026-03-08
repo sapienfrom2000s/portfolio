@@ -259,3 +259,44 @@ resource "null_resource" "notify" {
 
 Still, the recommended hierarchy is:
 `user_data` for basic bootstrapping → Ansible for full configuration management → provisioners only as a last resort.
+
+### What is **Terraform taint**?
+
+- Marks a Terraform resource as **unhealthy or unsafe**
+- Tells Terraform to **destroy and recreate the resource on the next `terraform apply`**
+- A resource can be **tainted either by Terraform automatically or by a user manually**
+
+Example:
+
+- A user runs `terraform apply`
+- Terraform creates an EC2 instance
+- A provisioner script fails during setup
+- **Terraform automatically marks the resource as tainted**
+- On the next `terraform apply`, Terraform **destroys the old instance and creates a new one**
+
+Another example (manual):
+
+- A DevOps engineer notices an EC2 instance is misconfigured
+- The engineer **forces Terraform to recreate the resource**
+
+Example command:
+
+terraform apply -replace="aws_instance.web"
+
+- Terraform marks the resource for replacement
+- On apply, Terraform **destroys the existing resource and creates a new one**
+
+### What happens internally when a resource is tainted?
+
+- Terraform **updates the Terraform state file**
+- The resource instance in the state is **flagged as "tainted"**
+- No infrastructure change happens immediately
+- Terraform only records that the resource **must be replaced**
+
+Next time `terraform plan` or `terraform apply` runs:
+
+- Terraform reads the state file
+- Detects the **tainted flag**
+- Plans a **destroy + create** action for that resource
+
+Plan output will show something like:
