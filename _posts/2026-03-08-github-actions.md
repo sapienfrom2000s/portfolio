@@ -1,4 +1,11 @@
-# GitHub Actions — Study Notes
+---
+title: "Github Actions"
+date: 2026-03-07 05:00:00 +0530
+categories: [Github Actions]
+tags: [Github Actions]
+---
+
+# GitHub Actions
 
 ## Motivation
 

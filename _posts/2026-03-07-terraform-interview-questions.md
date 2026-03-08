@@ -1,3 +1,10 @@
+---
+title: "Terraform - Interview Questions"
+date: 2026-03-07 05:00:00 +0530
+categories: [Terraform]
+tags: [Terraform, cheatsheet, interview]
+---
+
 # Terraform Mid-Level Interview Qs
 
 ---
