@@ -694,6 +694,12 @@ journalctl -u nginx --since "1 hour ago"
 ```
 - `journalctl` is centralized logs; you rarely grep files directly on systemd systems.
 
+# check last 5 logged in users
+last -n 5
+
+# check logged in users
+who
+
 # Bash Scripting
 
 Refs:
