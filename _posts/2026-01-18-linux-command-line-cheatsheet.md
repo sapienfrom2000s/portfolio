@@ -702,6 +702,9 @@ who
 
 # Bash Scripting
 
+Q. What happens when you run a command in linux?
+https://helloroot.medium.com/how-linux-commands-work-what-happens-when-you-run-a-command-in-linux-26253b693ac9
+
 Refs:
 1. https://learnxinyminutes.com/bash/
 2. Hackerranks bash challenge
