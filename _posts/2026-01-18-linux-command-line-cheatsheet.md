@@ -2,7 +2,7 @@
 title: "Linux - Command Line Cheatsheet"
 date: 2026-01-18 05:00:00 +0530
 categories: [Linux]
-tags: [linux, cheatsheet]
+tags: [linux, cheatsheet, R1(progress)]
 ---
 
 `tree`
