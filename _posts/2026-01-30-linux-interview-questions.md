@@ -14,6 +14,7 @@ tags: [linux, test]
 **Q:** What happens when user executes ls in bash shell?
 **A:** User input → Bash parses command → fork() creates a new process → exec() loads ls → ls makes system calls
 → Kernel accesses filesystem & terminal → Output shown
+https://helloroot.medium.com/how-linux-commands-work-what-happens-when-you-run-a-command-in-linux-26253b693ac9
 
 **Q:** What is kernel? 
 **A:** The kernel is the core component of an operating system that manages CPU scheduling, memory management, process management, context switching, and communication with hardware.
@@ -66,7 +67,6 @@ tldr; look inside `/proc`
 
 **Q:** What is a zombie process?
 **A:** A zombie process is a process that has finished execution but still has an entry in the process table.
-It occurs when the parent process hasn’t collected the child’s exit status using wait().
 You can identify it in system tools as a Z (defunct) process.
 
 **Q:** You have a webapp hosted on a ec2 instance. Suddenly the webapp got popular, given that you have no barriers
@@ -237,3 +237,19 @@ So in `2>&1`:
 
 Why `2>1` doesn't work:
 `2>1` redirects stderr into a file literally named `1`. Without `&`, the shell treats `1` as a filename, not a file descriptor.
+
+Q. How will you create a new systemd service?
+-> 
+
+Q. A production server is running slow. Users are reporting high latency. You SSH into the box. Walk me through your first 5 minutes of diagnosis — what commands do you run and what are you looking for?
+A.
+
+Q. If I have write, do I automatically have read access? If you can't see a file, how will you edit it?
+A.
+
+Q. Sort process by cpu `ps -aux`
+-> a - all users, u -> show which user owns the process, x -> extended
+  ps -aux --sort=-%cpu
+  ps -aux --sort=-%mem
+  
+Note - A zombie is a process that has finished executing but still has an entry in the process table because its parent hasn't read its exit status yet via wait().

@@ -163,3 +163,233 @@ def kla(b)
 for i in [bla, kla]
   i(4)
 ```
+
+**Anonymous Fns**
+
+lambda param1, param2, ... : expression
+mul = lambda x, y, z: x * y * z
+
+**regex in python**
+
+import re
+
+
+r is used for literal values, instead of new line it would look for exact \n(newline)
+
+reg = r"\n"
+
+reg = r'\b[a-zA-Z]+\Sl.p[a-z]?[0-9]{6}.*\b'
+\b → word boundary
+[a-zA-Z]+ → one or more letters
+\S -> any single character that is not a whitespace character
+. → any single character
+[0-9]{6} → exactly 6 digits
+[0-9]{1,4} -> matches 1 to 4 digits
+.* → any characters after that
+? → optional (0 or 1 occurrence)
+
+
+reg = r'(\w+)\@(\w+)\.(\w+)'
+bla@bla.abba
+
+>> matched = re.findall(r'abba', variable)
+>> matched
+['abba', 'abba'.....]
+
+**lazy evaluation**
+
+Lazy evaluation is the idea that, especially when dealing with large
+amounts of data, you do not want process all of the data before using the
+results. Y ou have already seen this with the range type, where the
+memory footprint is the same, even for one representing a large group of
+numbers.
+
+```
+def count():
+  n = 0
+  while True:
+  n += 1
+  yield n
+
+counter = count()
+next(counter)
+>> 1
+next(counter)
+>> 2
+```
+
+```
+nums_list = [x for x in range(100)] # normal
+nums_gen = (x for x in range(100)) # lazy
+
+import sys
+sys.getsizeof(nums_list)
+sys.getsizeof(nums_gen)
+```
+
+**opening files**
+
+with open('f.txt', 'r/w/rb....') as  f:
+  k1 = f.read()
+  k2 = f.readlines()
+
+import pathlib
+path = pathlib.Path("/Users/kbehrman......../bla.py")
+path.read_text()
+
+for binary data
+path.read_bytes()
+
+working with json files
+import json
+
+with open('service.json', 'r') as f:
+  p = json.load(f)
+  p['a'] = 90909
+  print(p)
+  
+# Read line by line — use this for logs (memory efficient, file never fully loaded)
+with open("app.log") as f:
+    for line in f:
+        print(line.strip())  # strip() removes the trailing \n
+
+**context managers**
+
+You already used a context manager here:
+
+```
+with open("app.log") as f:
+    for line in f:
+        print(line.strip())
+```
+
+Motivation:
+- Some resources must be cleaned up no matter what (files, DB connections, locks, temp files).
+- Without `with`, you can forget to close/release on error paths.
+- Context managers keep setup + cleanup together and safer.
+
+Under the hood, `with` calls:
+- `__enter__()` at the start
+- `__exit__()` at the end (even if exception happens)
+
+Custom implementation using a class:
+
+```
+class ManagedFile:
+    def __init__(self, path, mode):
+        self.path = path
+        self.mode = mode
+        self.f = None
+
+    def __enter__(self):
+        self.f = open(self.path, self.mode)
+        return self.f
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.f:
+            self.f.close()
+        # False means: do not swallow exceptions
+        return False
+
+with ManagedFile("notes.txt", "w") as f:
+    f.write("hello from custom context manager")
+```
+
+Custom implementation using `contextlib.contextmanager`:
+
+```
+from contextlib import contextmanager
+
+@contextmanager
+def managed_file(path, mode):
+    f = open(path, mode)
+    try:
+        yield f  # value after "as"
+    finally:
+        f.close()  # always runs
+
+with managed_file("notes.txt", "a") as f:
+    f.write("\nline 2")
+```
+
+**the os module**
+
+```
+os.listdir('.')
+os.rename('_crud_handler', 'crud_handler')
+os.chmod(fname, '0o777')
+os.mkdir('/tmp/holding')
+os.mkdirs('/tmp/holding',...)
+os.remove('f')
+os.rmdir(dir)
+```
+
+```
+import os
+# get full path
+cur_dir = os.getcwd()
+os.path.split(cur_dir)
+os.path.dirname(cur_dir)
+os.path.basename(cur_dir)
+```
+
+**spawn processes with the subprocess module**
+
+```
+import subprocess
+k = subprocess.run(['ls', '-l'], capture_output=True, check=True, text=True, timeout=10)
+# capture_output holds the data instead of directly throwing to stdout, can be accessed by k.stdout
+# check=True raises exception if the process throws any exception
+k.stdout
+```
+
+**capturing arguments**
+
+```
+# doing this makes sure that func does not get executed when you are importing code
+# only gets executed when you do something like python3 file.py
+
+if __name__ == '__main__':
+  func()
+
+import sys
+
+# if you wish to capture the args passed
+sys.argv[0]
+sys.argv[1]
+```
+
+**def bla(log_path: str) vs def bla(log_path = str)**
+
+log_path: str is a type hint inside a function signature that labels the expected data type (it says "this should be text"). It's not enforced.
+
+log_path = str is an assignment that makes the variable equal to the actual Python string class itself (not a specific word or path).
+
+TL;DR: Use : to describe what a variable should be, and = to give it a specific value.
+
+**fn signatures**
+
+  Gives info on how the return type should look like, not enforced
+
+  ```
+  def get_user(id: int) -> str:
+  Return: "Alice"
+
+  def get_scores() -> list[int]:
+  Return: [88, 92, 100]
+
+  def get_counts() -> dict[str, int]:
+  Return: {"apple": 5, "orange": 2}
+
+  def get_grid() -> list[list[int]]:
+  Return: [[1, 0], [0, 1]]
+
+  def get_cube() -> list[list[list[int]]]:
+  Return: [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+
+  def get_data() -> dict[str, list[int]]:
+  Return: {"ids": [101, 102], "codes": [200, 404]}
+
+  def find_name() -> str | None:
+  Return: "Bob" or None
+  ```

@@ -57,7 +57,7 @@ tldr;
 hard link creates a new file which points to the original file's inode.
 soft link creates a new inode to point to original file.
 
-**Memory**
+Memory
 
 1. Hard: name → inode → data
 2. Soft: name → inode → path → inode → data
@@ -86,6 +86,7 @@ Shows detailed metadata about file like: permissions, owner, size, timestamps.
 List block devices (disks, partitions, LVM, loop devices) in a tree.
 
 Quick terminologies:
+
 loop = Loop devices (or loopback devices) are a concept from Linux/Unix systems that let you treat a regular file as if it were a block device (like a hard disk or partition). Loop devices were needed because operating systems expect to mount filesystems from block devices (like /dev/sda1), but disk images are just regular files - so loop devices bridge this gap by presenting a regular file through the block device interface that the OS's mount system requires.
 
 LVM (Logical Volume Manager) is a Linux layer that manages storage flexibly instead of fixed partitions.
@@ -264,26 +265,12 @@ In normal Linux permissions, there are only these owners:
 User owner (UID)  
 Group owner (GID)
 
-`chown`
-
-Change owner both user and group:
-```bash
-chown user:group file
-```
-
-`chgrp`
-
-Anything `chgrp` can do, `chown` can also do:
-```bash
-# both are equivalent
-chgrp dev file
-chown :dev file
-```
+`chown` and `chgrp` can also be used to change ownershipts
 
 `umask`
 
 Manage the read/write/execute permissions that are masked out (i.e. restricted) for newly created files by the
-user.
+user. The permissions are set at a user level.
 
 ```bash
 umask 022
@@ -386,6 +373,16 @@ Execute permission != write permission:
 - Kernel blocks the write at system call level.
 - Internal logic never gets to execute the write.
 
+### Enabling suid and sgid
+```
+chmod u+s filename
+chmod g+s filename
+```
+
+tldr;
+SUID: Runs a file with the owner’s privileges instead of the user’s.
+SGID: Runs a file with the group’s privileges, and on directories makes new files inherit the directory’s group.
+
 `Sticky bit`
 
 Purpose:
@@ -457,7 +454,7 @@ find . -name "app.log"
 find . -iname "readme.md"
 
 # Only files or only directories
-find /var/log -type f
+find -max-depth 1 /var/log -type f
 find /etc -type d
 
 # Find by extension
@@ -470,13 +467,7 @@ find /var/log -type f -mtime -7
 find /var -type f -size +100M
 
 # Combine conditions (AND is default)
-find . -type f -name "*.log" -mtime -3
-
-# OR with parentheses (escape them)
-find . \\( -name "*.log" -o -name "*.out" \\)
-
-# Exclude a directory
-find . -type f -name "*.log" -not -path "./node_modules/*"
+find . -type f -name "*.log" -mtime -s
 ```
 
 Useful flags:
@@ -593,30 +584,6 @@ awk '$2 == 234 && $3 == 233' app.log
 awk '$9 ~ /^5/' access.log
 ```
 
-Program structure (BEGIN / per-line / END):
-```bash
-awk 'BEGIN { } { } END { }' file
-```
-- `BEGIN { }` runs once before any input is read.
-- `{ }` (the middle block) runs for each line.
-- `END { }` runs once after all input is processed.
-- This structure is great for setting counters, computing totals, and printing summaries.
-
-Count values in a column (frequency table):
-```bash
-awk '{c[$2]++} END {for (i in c) print i, c[i]}' file
-```
-- `c[$2]++` increments a counter for the value in the second field.
-- The `END` block prints each distinct value and its count.
-- Output order is arbitrary because `awk` iterates associative arrays in hash order.
-
-Sample output:
-```text
-200 10
-400 5
-500 3
-```
-
 `ufw`
 
 Uncomplicated Firewall for quick host-level rules (built on top of `iptables`).
@@ -673,9 +640,12 @@ systemctl reload nginx
 systemctl enable nginx
 systemctl disable nginx
 
-# Show unit file + drop-ins
+# Show unit file
 systemctl cat nginx
 systemctl show nginx
+
+# list systemd units
+systemctl list-units
 ```
 - `status` is the first thing you check in production; it shows logs and the last exit code.
 - `reload` sends a reload signal if the service supports it (no downtime).
@@ -700,10 +670,249 @@ last -n 5
 # check logged in users
 who
 
-# Bash Scripting
+# nproc and uptime
+
+```
+ubuntu@gcloud-master:~$ nproc
+4
+ubuntu@gcloud-master:~$ uptime
+06:47:39 up 40 days, 19:03,  4 users,  load average: 2.30, 1.00, 0.30
+```
+
+Load average (2.30, 1.00, 0.30) means about 2.3, 1, and 0.3 processes using or waiting for CPU in the last 1, 5, 15 mins; on 4 cores(from `nproc`), 4 = full usage, and above 4 means the
+system is overloaded and processes are waiting.
+
+### 📝 vmstat
+
+`vmstat` shows system performance stats for processes, memory, swap, disk I/O, and CPU.
+
+---
+
+### Sample commands
+- `vmstat` → single snapshot  
+- `vmstat 1` → update every 1 second  
+- `vmstat 1 5` → 5 updates at 1-second interval  
+- `vmstat -s` → summary stats  
+- `vmstat -d` → disk stats  
+
+---
+
+Columns
+
+- `r` → running (CPU queue)  
+- `b` → blocked (I/O wait)  
+- `swpd` → swap used  
+- `free` → free RAM  
+- `buff` → buffers  
+- `cache` → cache  
+- `si` → swap in  
+- `so` → swap out  
+- `bi` → disk read  
+- `bo` → disk write  
+- `in` → interrupts/sec  
+- `cs` → context switches/sec  
+- `us` → user CPU
+- `sy` → system CPU
+- `id` → idle
+- `wa` → I/O wait
+- `st` → stolen (VM)
+
+---
+
+# iostat
+
+A Linux command to monitor disk I/O and CPU usage. Part of the `sysstat` package.
+
+---
+
+## Command
+```bash
+iostat -x 1        # Extended stats, refresh every second
+iostat -xmt 2      # Extended, MB/s, with timestamp — use when logging/sharing
+```
+
+---
+
+## Columns to Check
+
+| Column | Meaning | Red Flag |
+|--------|---------|----------|
+| `%util` | How busy the disk is | > 80% = bottleneck |
+| `aqu-sz` | Queue of waiting I/O requests | > 1 = disk can't keep up |
+| `r_await` | Avg wait time (ms) for reads | > 1ms SSD, > 20ms HDD |
+| `w_await` | Avg wait time (ms) for writes | > 1ms SSD, > 20ms HDD |
+| `%iowait` | CPU time spent waiting for I/O (in CPU section) | High = CPU blocked by disk |
+
+> Note: `aqu-sz` is the same as `avgqu-sz` — renamed in newer versions of sysstat.
+
+---
+
+"Production is slow — is the disk the problem?"
+
+```bash
+iostat -x 1
+```
+
+- `%util` near 100% → disk is saturated  
+- `await` is high → disk is slow to respond  
+- `aqu-sz` > 1 → requests are piling up  
+- `%iowait` high → CPU is blocked waiting for disk
+
+iostat tells you about disk and CPU — how hard your storage devices are working. vmstat gives you a system-wide snapshot — CPU, memory, swap, I/O, and processes all in one line.
+
+# ss
+
+A Linux command to monitor network connections, ports, and socket states. Modern replacement for `netstat`.
+
+---
+
+## Command
+```bash
+ss -tlnp      # Most common — TCP, listening, numeric, with process
+ss -tunlp     # TCP + UDP, listening, numeric, with process
+```
+
+---
+
+## Columns to Check
+
+| Column | Meaning | Red Flag |
+|--------|---------|----------|
+| `State` | Socket state (LISTEN, ESTAB, etc.) | `CLOSE-WAIT` piling up = app not closing connections |
+| `Recv-Q` | Data received but not read by app yet | > 0 on LISTEN = app overwhelmed |
+| `Send-Q` | Data sent but not acknowledged yet | > 0 consistently = network or remote issue |
+| `Local Address:Port` | Your machine's IP and port | Bound to `127.0.0.1` = not reachable externally |
+| `Peer Address:Port` | Remote machine's IP and port | — |
+| `Process` | Which process owns the socket | — |
+
+---
+
+## States to Know
+
+| State | Meaning |
+|-------|---------|
+| `LISTEN` | Waiting for incoming connections |
+| `ESTAB` | Active established connection |
+| `TIME-WAIT` | Connection closing, waiting to ensure remote got the FIN |
+| `CLOSE-WAIT` | Remote closed, your app hasn't closed its end yet |
+
+---
+
+"A port isn't reachable — is the service listening?"
+
+```bash
+ss -tlnp | grep <port>
+```
+
+- See `LISTEN` → service is up, problem is firewall or network
+- Nothing shows → service is down or bound to wrong interface
+- Bound to `127.0.0.1` → only accessible locally, not externally
+
+---
+
+## Debugging Cheat Sheet
+
+| Symptom | Command | Look for |
+|---------|---------|----------|
+| Service unreachable | `ss -tlnp \| grep <port>` | Not listening / wrong interface |
+| App slow | `ss -tn` | Recv-Q > 0 (data arrived but app hasn't read it — app is overwhelmed) |
+| Too many connections | `ss -tn \| grep ESTAB \| wc -l` | Unexpectedly high count |
+| Port still in use after restart | `ss -tlnp \| grep <port>` | TIME-WAIT or wrong process |
+| Connection leak | `ss -tn \| grep CLOSE-WAIT \| wc -l` | High count |
+
+### iftop
+
+Shows live bandwidth per connection — who your machine is talking to and how much data is flowing.
+
+iftop              # watch all connections on default NIC
+iftop -i eth0      # specify a NIC
+iftop -n           # don't resolve hostnames (faster, clearer)
+iftop -P           # show ports
+iftop -nP          # most useful — no DNS, show ports
+
+### nethogs
+
+Shows live bandwidth per process — which program on your machine is consuming bandwidth.
+
+nethogs             # watch all NICs
+nethogs eth0        # specific NIC
+nethogs -d 2        # refresh every 2 seconds
+```
+
+### Reading the Output
+```
+PID    USER    PROGRAM                DEV    SENT    RECEIVED
+1234   root    /usr/bin/python3       eth0   2.5     0.1      KB/sec
+5678   ubuntu  sshd: ubuntu@eth0      eth0   0.1     1.2      KB/sec
+
+### renice
+
+renice 10 -p 1234 # higher the number lower the priority
+
+### Bash Scripting
 
 Q. What happens when you run a command in linux?
 https://helloroot.medium.com/how-linux-commands-work-what-happens-when-you-run-a-command-in-linux-26253b693ac9
+
+### Is it possible to recover something even though it's deleted from the disk?
+-> Yes, if it's still loaded in the memory. Check `lsof`.
+
+### space is there but hitting inode limit
+
+Inodes are pre-allocated at filesystem creation time — a fixed pool is created upfront, separate from data blocks. You can have 500GB of free space but 
+zero inodes left, and the system will refuse to create new files:
+
+```
+touch newfile
+# touch: cannot touch 'newfile': No space left on device
+# But df -h shows 60% free — confusing!
+```
+
+# shows inode usage across all filesystems
+df -i 
+
+### strace
+
+Definition: Intercepts and records every system call (request your app makes to the Linux kernel) — files, network, everything.
+
+Command:
+```bash
+strace ./myapp          # trace new process
+strace -p <PID>         # attach to running process
+strace -p <PID> -T      # show time spent per syscall (find hangs)
+strace -c ./myapp       # summary of all syscalls
+strace ./myapp 2>&1 | tail -20   # see last syscalls before crash
+```
+
+Reading output: `= 3` means success. `= -1 ENOENT` (file not found) or `= -1 ECONNREFUSED` (nothing on that port) means kernel said no.
+
+App crashing silently? → `strace ./myapp 2>&1 | tail -20` — last syscall before death tells you why.
+
+App hanging? → `strace -p <PID> -T` — the syscall repeating with high time is the bottleneck.
+
+### xargs
+
+Useful for passing output of one command to input of the next
+
+```
+find . -type f -name '*.jpg' | xargs rm
+
+# when order is important
+# -I {} makes sure that inputs are passed in order
+# cp bla bla.bak for each piped output
+find . -name "*.conf" -print0 | xargs -I {} cp {} {}.bak
+```
+
+### ports listening
+
+```
+# w/o process ids
+ss -tuln
+
+# w process ids
+ss -tulnp
+
+```
 
 Refs:
 1. https://learnxinyminutes.com/bash/
